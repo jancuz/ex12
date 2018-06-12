@@ -9,76 +9,6 @@ namespace ex12
 {
     delegate int[] sort(int[] arr);         // делегат для сортировки
 
-    class TreeElement
-    {
-        public readonly int Data;
-        public TreeElement Left;
-        public TreeElement Right;
-
-        public TreeElement(int data, TreeElement left = null, TreeElement right = null)
-        {
-            Data = data;
-            Left = left;
-            Right = right;
-        }
-    }
-
-    class Tree: Program
-    {
-        private static TreeElement root;
-        private static readonly List<int> result = new List<int>(); // отсортированный массив
-
-        private static void AddToTreeElement(int value, ref TreeElement localRoot)
-        {
-            //countCompare++;
-            if (localRoot == null)
-            {
-                countChange++;
-                localRoot = new TreeElement(value);
-                return;
-            }
-            countCompare++;
-            if (localRoot.Data < value)
-            {
-                countChange++;
-                AddToTreeElement(value, ref localRoot.Right);
-            }
-            else
-            {
-                countChange++;
-                AddToTreeElement(value, ref localRoot.Left);
-            }
-        }
-
-        public static void FormTree(int[] arr)
-        {
-            foreach(int el in arr)
-                AddToTreeElement(el, ref root);
-        }
-
-
-        private static void GetSortedNumRec(TreeElement node)
-        {
-            // обход дерева лево -> корень -> право
-            if (node != null)
-            {
-                GetSortedNumRec(node.Left);
-                result.Add(node.Data);
-                GetSortedNumRec(node.Right);
-            }
-        }
-
-        static public int[] TreeSort(int[] arr)
-        {
-            root = null;
-            result.Clear();
-            FormTree(arr);
-            GetSortedNumRec(root);
-            return result.ToArray();
-        }
-
-    }
-
     class Program
     {
         public static int countChange = 0;
@@ -114,6 +44,7 @@ namespace ex12
 
         static int[] MergeSort(int[] arr)
         {
+            countCompare++;
             if (arr.Length == 1)
                 return arr;
             int midPos = arr.Length / 2;
@@ -122,9 +53,9 @@ namespace ex12
 
         static int[] Merge(int[] arr1, int[] arr2)
         {
-            int a = 0, b = 0;
-            int[] merged = new int[arr1.Length + arr2.Length];
-            for (Int32 i = 0; i < arr1.Length + arr2.Length; i++)
+            int a = 0, b = 0;                                   // позиции в массивах
+            int[] merged = new int[arr1.Length + arr2.Length];  // новый массив, полученный в результате слияния arr1 и arr2
+            for (int i = 0; i < arr1.Length + arr2.Length; i++)
             {
                 if (b < arr2.Length && a < arr1.Length)
                 {
@@ -148,6 +79,56 @@ namespace ex12
             return merged;
         }
 
+        private static TreeElement root;
+        private static readonly List<int> result = new List<int>(); // отсортированный массив
+
+        private static void AddToTreeElement(int value, ref TreeElement localRoot)
+        {
+            if (localRoot == null)
+            {
+                countChange++;
+                localRoot = new TreeElement(value);
+                return;
+            }
+            countCompare++;
+            if (localRoot.Data < value)
+            {
+                countChange++;
+                AddToTreeElement(value, ref localRoot.Right);
+            }
+            else
+            {
+                countChange++;
+                AddToTreeElement(value, ref localRoot.Left);
+            }
+        }
+
+        public static void FormTree(int[] arr)
+        {
+            foreach (int el in arr)
+                AddToTreeElement(el, ref root);
+        }
+
+        private static void GetSortedNumRec(TreeElement node)
+        {
+            // обход дерева лево -> корень -> право
+            if (node != null)
+            {
+                GetSortedNumRec(node.Left);
+                result.Add(node.Data);
+                GetSortedNumRec(node.Right);
+            }
+        }
+
+        static public int[] TreeSort(int[] arr)
+        {
+            root = null;
+            result.Clear();
+            FormTree(arr);
+            GetSortedNumRec(root);
+            return result.ToArray();
+        }
+
         static void Main(string[] args)
         {
             int[] arr = new int[]{ 1, -2, -5, 9, 3, -1, 7, 2 };
@@ -160,7 +141,7 @@ namespace ex12
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("\nСортировка с помощью бинарного дерева:");
             Console.ResetColor();
-            DoSort(arr, Tree.TreeSort);
+            DoSort(arr, TreeSort);
         }
     }
 }
