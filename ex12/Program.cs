@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
 
 namespace ex12
 {
@@ -37,7 +34,7 @@ namespace ex12
             countChange = 0;                                    // обнуление счетчиков операций
             countCompare = 0;                                   // и времени
             int[] sortSortedDownArr = methodSort(sortArr);
-            Console.WriteLine("\nОтсортированный упорядоченный во убыванию массив: " + String.Join(", ", sortSortedDownArr));
+            Console.WriteLine("\nОтсортированный упорядоченный по убыванию массив: " + String.Join(", ", sortSortedDownArr));
             Console.WriteLine("Затрачено {0} сравнений, {1} перессылок",
               countCompare, countChange);
         }
@@ -93,12 +90,10 @@ namespace ex12
             countCompare++;
             if (localRoot.Data < value)
             {
-                countChange++;
                 AddToTreeElement(value, ref localRoot.Right);
             }
             else
             {
-                countChange++;
                 AddToTreeElement(value, ref localRoot.Left);
             }
         }
@@ -142,6 +137,9 @@ namespace ex12
             Console.WriteLine("\nСортировка с помощью бинарного дерева:");
             Console.ResetColor();
             DoSort(arr, TreeSort);
+
+            Console.WriteLine("Для завершения работы программы нажмите Enter...");
+            Console.ReadLine();
         }
     }
 }
